@@ -7,6 +7,16 @@ import {
 } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
 
+interface Exception {
+  name: string;
+  message: string;
+}
+
+export class EntityNotFoundException implements Exception {
+  public readonly name = 'EntityNotFoundException';
+  public readonly message = 'entity not found';
+}
+
 @Injectable()
 export class NotFoundInterceptor implements NestInterceptor {
   constructor(private errorMessage: string) {}

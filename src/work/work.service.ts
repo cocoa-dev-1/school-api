@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Work } from 'src/entity/work.entity';
+import { EntityNotFoundException } from 'src/utils/interceptors';
 import { Repository } from 'typeorm';
 import { CreateWorkDto } from './dto/create-work.dto';
 
