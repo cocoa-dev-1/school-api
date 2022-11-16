@@ -7,7 +7,9 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { UseInterceptors } from '@nestjs/common/decorators';
+import { UseGuards, UseInterceptors } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { Work } from 'src/entity/work.entity';
 import { NotFoundInterceptor } from 'src/utils/interceptors';
 import { CreateWorkDto } from './dto/create-work.dto';
@@ -22,6 +24,7 @@ export class WorkController {
     return this.workService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @UseInterceptors(new NotFoundInterceptor('work id not found'))
   async findOne(@Param('id') id: number): Promise<Work> {

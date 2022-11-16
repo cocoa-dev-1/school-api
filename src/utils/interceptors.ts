@@ -1,6 +1,8 @@
 import {
   CallHandler,
   ExecutionContext,
+  HttpException,
+  HttpStatus,
   Injectable,
   NestInterceptor,
   NotFoundException,
@@ -26,6 +28,31 @@ export class NotFoundInterceptor implements NestInterceptor {
       catchError((error) => {
         if (error instanceof EntityNotFoundException) {
           throw new NotFoundException(this.errorMessage);
+        } else {
+          throw error;
+        }
+      }),
+    );
+  }
+}
+
+export class UserAlreadyExistException implements Exception {
+  public readonly name = 'UserAlreadyExistException';
+  public readonly message = 'user already exist';
+}
+
+@Injectable()
+export class AlreadyExistInterceptor implements NestInterceptor {
+  constructor(private errorMessage: string) {}
+
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler<any>,
+  ): Observable<any> {
+    return next.handle().pipe(
+      catchError((error) => {
+        if (error instanceof UserAlreadyExistException) {
+          throw new HttpException(this.errorMessage, HttpStatus.BAD_REQUEST);
         } else {
           throw error;
         }
