@@ -36,9 +36,9 @@ export class NotFoundInterceptor implements NestInterceptor {
   }
 }
 
-export class UserAlreadyExistException implements Exception {
-  public readonly name = 'UserAlreadyExistException';
-  public readonly message = 'user already exist';
+export class EntityAlreadyExistException implements Exception {
+  public readonly name = 'EntityAlreadyExistException';
+  public readonly message = 'entity already exist';
 }
 
 @Injectable()
@@ -51,7 +51,7 @@ export class AlreadyExistInterceptor implements NestInterceptor {
   ): Observable<any> {
     return next.handle().pipe(
       catchError((error) => {
-        if (error instanceof UserAlreadyExistException) {
+        if (error instanceof EntityAlreadyExistException) {
           throw new HttpException(this.errorMessage, HttpStatus.BAD_REQUEST);
         } else {
           throw error;

@@ -1,14 +1,9 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
 import {
+  EntityAlreadyExistException,
   EntityNotFoundException,
-  UserAlreadyExistException,
 } from 'src/utils/interceptors';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -51,7 +46,7 @@ export class UserService {
       return newUser;
     } catch (error) {
       if (error?.code == 'ER_DUP_ENTRY') {
-        throw new UserAlreadyExistException();
+        throw new EntityAlreadyExistException();
       }
       throw new InternalServerErrorException();
       // if (error?.code == )
