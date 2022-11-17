@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Work } from 'src/entity/work.entity';
 import { EntityNotFoundException } from 'src/utils/interceptors';
@@ -30,6 +31,7 @@ export class WorkService {
   async create(body: CreateWorkDto): Promise<Work> {
     const newWork = this.workRepository.create(body);
     const result = await this.workRepository.save(newWork);
+    if (!result) throw new InternalServerErrorException();
     return result;
   }
 
@@ -38,12 +40,14 @@ export class WorkService {
     targetWork.name = body.name;
     targetWork.body = body.body;
     const result = await this.workRepository.save(targetWork);
+    if (!result) throw new InternalServerErrorException();
     return result;
   }
 
   async delete(id: number): Promise<Work> {
     const targetWork = await this.findOne(id);
     const result = await this.workRepository.remove(targetWork);
-    return targetWork;
+    if (!result) throw new InternalServerErrorException();
+    return result;
   }
 }
