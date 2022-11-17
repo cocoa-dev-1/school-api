@@ -28,9 +28,7 @@ export class WorkService {
   }
 
   async create(body: CreateWorkDto): Promise<Work> {
-    const newWork = this.workRepository.create();
-    newWork.name = body.name;
-    newWork.body = body.body;
+    const newWork = this.workRepository.create(body);
     const result = await this.workRepository.save(newWork);
     return result;
   }
@@ -39,7 +37,7 @@ export class WorkService {
     const targetWork = await this.findOne(id);
     targetWork.name = body.name;
     targetWork.body = body.body;
-    const result = this.workRepository.save(targetWork);
+    const result = await this.workRepository.save(targetWork);
     return result;
   }
 
