@@ -6,7 +6,6 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { appendFile } from 'fs';
 import { moment } from '../moment';
 import { winstonLogger } from '../winston';
 
@@ -78,14 +77,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
   }
 
   private writeErrorLogToFile(errorLog: string): void {
-    // appendFile(
-    //   `logs/${moment().format('YYYY-MM-DD')}.log`,
-    //   errorLog,
-    //   'utf8',
-    //   (err) => {
-    //     if (err) throw err;
-    //   },
-    // );
     winstonLogger.error(errorLog);
   }
 }

@@ -8,7 +8,6 @@ import {
   Post,
 } from '@nestjs/common';
 import { UseGuards, UseInterceptors } from '@nestjs/common/decorators';
-import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { Work } from 'src/entity/work.entity';
 import { NotFoundInterceptor } from 'src/utils/interceptors';

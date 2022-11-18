@@ -49,7 +49,6 @@ export class UserService {
         throw new EntityAlreadyExistException();
       }
       throw new InternalServerErrorException();
-      // if (error?.code == )
     }
   }
 }
