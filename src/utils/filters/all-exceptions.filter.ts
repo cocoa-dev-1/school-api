@@ -39,10 +39,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       errorMessage = 'internal server error';
+      this.printErrorLog(exception.message);
     }
 
     const errorResponse = this.getErrorResponse(status, errorMessage, request);
     const errorLog = this.getErrorLog(errorResponse, request, exception);
+    this.printErrorLog(errorLog);
     this.writeErrorLogToFile(errorLog);
 
     response.status(status).json(errorResponse);
@@ -74,6 +76,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     ${JSON.stringify(user ?? 'Not signed in')}\n\n
     ${exception instanceof HttpException ? exception.stack : error}\n\n`;
     return errorLog;
+  }
+
+  private printErrorLog(errorLog: string): void {
+    console.log(errorLog);
   }
 
   private writeErrorLogToFile(errorLog: string): void {

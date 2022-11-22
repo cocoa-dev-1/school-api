@@ -4,10 +4,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
+import { File } from './file.entity';
 
 @Entity({ name: 'work' })
 @Unique(['id'])
@@ -29,4 +31,7 @@ export class Work extends BaseEntity {
 
   @DeleteDateColumn()
   deleted_at: Date; // Deletion date
+
+  @OneToMany(() => File, (file) => file.id)
+  files: Array<File>;
 }
