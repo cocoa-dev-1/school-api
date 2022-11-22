@@ -39,7 +39,7 @@ export class Work extends BaseEntity {
   @DeleteDateColumn()
   deleted_at: Date; // Deletion date
 
-  @ApiProperty({ description: '수행평가 자료' })
+  @ApiProperty({ description: '수행평가 자료', type: () => File })
   @OneToMany(() => File, (file) => file.id)
   files: Array<File>;
 }
