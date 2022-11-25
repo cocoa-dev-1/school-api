@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InternalServerErrorException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
+import { File } from 'src/entity/file.entity';
 import { Work } from 'src/entity/work.entity';
 import { EntityNotFoundException } from 'src/utils/interceptors';
 import { Repository } from 'typeorm';
@@ -14,7 +15,9 @@ export class WorkService {
   ) {}
 
   async findAll(): Promise<Array<Work>> {
-    const result = await this.workRepository.find();
+    const result = await this.workRepository.find({
+      relations: ['files'],
+    });
     return result;
   }
 
@@ -23,6 +26,7 @@ export class WorkService {
       where: {
         id: id,
       },
+      relations: ['files'],
     });
     if (!result) throw new EntityNotFoundException();
     return result;

@@ -26,7 +26,8 @@ export class WorkController {
   })
   @ApiCreatedResponse({
     description: '모든 수행평가를 반환한다.',
-    type: Array<Work>,
+    type: Work,
+    isArray: true,
   })
   @Get()
   async findAll(): Promise<Array<Work>> {
