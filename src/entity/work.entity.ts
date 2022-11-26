@@ -44,6 +44,6 @@ export class Work extends BaseEntity {
     type: () => File,
     isArray: true,
   })
-  @OneToMany(() => File, (file) => file.id)
+  @OneToMany(() => File, (file) => file.work)
   files: Array<File>;
 }

@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -27,6 +28,7 @@ export class File extends BaseEntity {
   fileUrl: string;
 
   @ApiProperty({ description: '수행평가 id', type: () => Work })
-  @ManyToOne(() => Work, (work) => work.id)
+  @ManyToOne(() => Work, (work) => work.files)
+  @JoinColumn({ name: 'ref_id' })
   work: Work;
 }
