@@ -29,6 +29,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     let status: HttpStatus;
     let errorMessage: string;
+    let errorMessageForLog: string;
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
@@ -36,14 +37,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
       errorMessage =
         (errorResponse as HttpExceptionResponse).error || exception.message;
+      errorMessageForLog =
+        (errorResponse as HttpExceptionResponse).error || exception.message;
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       errorMessage = 'internal server error';
-      this.printErrorLog(exception.message);
+      errorMessageForLog = exception.message;
     }
 
     const errorResponse = this.getErrorResponse(status, errorMessage, request);
-    const errorLog = this.getErrorLog(errorResponse, request, exception);
+    const errorLog = this.getErrorLog(
+      { ...errorResponse, error: errorMessageForLog },
+      request,
+      exception,
+    );
     this.printErrorLog(errorLog);
     this.writeErrorLogToFile(errorLog);
 
